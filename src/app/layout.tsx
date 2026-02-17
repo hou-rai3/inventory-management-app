@@ -27,7 +27,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ja">
+    <html lang="ja" suppressHydrationWarning>
       <body className={`${bodyFont.variable} ${headingFont.variable} antialiased`}>
         <div className="app-shell">
           <header className="top-nav">

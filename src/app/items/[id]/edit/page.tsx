@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
 import inventoryData from "../../../../../data/inventory.json";
@@ -39,10 +39,11 @@ const buildItemPayload = (form: InventoryFormState) => {
 };
 
 type Props = {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 };
 
 export default function EditItemPage({ params }: Props) {
+  const { id } = React.use(params);
   const router = useRouter();
   const [form, setForm] = useState<InventoryFormState | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -52,7 +53,7 @@ export default function EditItemPage({ params }: Props) {
 
   useEffect(() => {
     const items = loadInventory(initialItems);
-    const target = items.find((item) => item.id === params.id);
+    const target = items.find((item) => item.id === id);
     if (!target) {
       setNotFound(true);
       return;
@@ -67,7 +68,7 @@ export default function EditItemPage({ params }: Props) {
       location: target.location,
       updatedBy: target.updatedBy,
     });
-  }, [initialItems, params.id]);
+  }, [initialItems, id]);
 
   const handleChange = (field: keyof InventoryFormState, value: string) => {
     setForm((prev) => (prev ? { ...prev, [field]: value } : prev));
@@ -79,7 +80,7 @@ export default function EditItemPage({ params }: Props) {
       const payload = buildItemPayload(form);
       const items = loadInventory(initialItems);
       const nextItems = items.map((item) =>
-        item.id === params.id
+        item.id === id
           ? {
               ...item,
               ...payload,
@@ -87,7 +88,7 @@ export default function EditItemPage({ params }: Props) {
             }
           : item
       );
-      const exists = items.some((item) => item.id === params.id);
+      const exists = items.some((item) => item.id === id);
       if (!exists) {
         setError("対象の物品が見つかりません");
         return;
