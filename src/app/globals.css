@@ -559,6 +559,35 @@ a {
   gap: 18px;
 }
 
+.inventory-forms {
+  display: grid;
+  gap: 18px;
+}
+
+.inventory-form {
+  background: var(--card);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  padding: 18px;
+  display: grid;
+  gap: 12px;
+}
+
+.inventory-form-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.form-error {
+  margin: 0;
+  color: var(--accent-3);
+  font-weight: 700;
+}
+
 .item-card {
   background: var(--card);
   border-radius: var(--radius);
@@ -628,7 +657,7 @@ a {
 
 .item-stats {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   gap: 10px;
 }
 
@@ -645,6 +674,7 @@ a {
   justify-content: space-between;
   align-items: center;
   gap: 12px;
+  flex-wrap: wrap;
 }
 
 .item-hint {
@@ -744,7 +774,7 @@ a {
   gap: 6px;
   align-items: center;
   justify-content: flex-end;
-  width: 100px;
+  width: 210px;
   height: auto;
 }
 
@@ -752,19 +782,17 @@ a {
   background: rgba(10, 10, 10, 0.95);
   border: 2px solid var(--blue);
   border-radius: 12px;
-  padding: 8px 10px;
+  padding: 10px 14px;
   box-shadow: 0 0 20px rgba(59, 126, 255, 0.5);
   font-size: 12px;
   color: #ffffff;
-  width: 90px;
-  height: 32px;
+  width: 190px;
+  min-height: 36px;
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  white-space: normal;
   flex-shrink: 0;
 }
 

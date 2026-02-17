@@ -3,68 +3,74 @@
     {
       "id": "part-001",
       "name": "M3 六角穴付きボルト",
-      "image": "/images/inventory/bolt.svg",
+      "image": "/images/marbling-title.png",
       "quantity": 42,
       "unit": "本",
       "threshold": 60,
       "unitPrice": 8,
       "purchaseUrl": "https://www.example.com/bolt-m3",
-      "location": "工具棚A-1"
+      "location": "工具棚A-1",
+      "updatedBy": "備品係"
     },
     {
       "id": "part-002",
       "name": "アルミフレーム 2020",
-      "image": "/images/inventory/frame.svg",
+      "image": "/images/marbling-title.png",
       "quantity": 7.5,
       "unit": "m",
       "threshold": 10,
       "unitPrice": 720,
       "purchaseUrl": "https://www.example.com/aluminum-frame-2020",
-      "location": "資材ラックB-2"
+      "location": "資材ラックB-2",
+      "updatedBy": "加工班"
     },
     {
       "id": "part-003",
       "name": "PLA フィラメント 1.75mm",
-      "image": "/images/inventory/filament.svg",
+      "image": "/images/marbling-title.png",
       "quantity": 3.2,
       "unit": "kg",
       "threshold": 2,
       "unitPrice": 2580,
       "purchaseUrl": "https://www.example.com/pla-filament",
-      "location": "3Dプリンタ棚C-1"
+      "location": "3Dプリンタ棚C-1",
+      "updatedBy": "製作班"
     },
     {
       "id": "part-004",
       "name": "NEMA17 ステッピングモーター",
-      "image": "/images/inventory/motor.svg",
+      "image": "/images/marbling-title.png",
       "quantity": 5,
       "unit": "台",
       "threshold": 6,
       "unitPrice": 1980,
       "purchaseUrl": "https://www.example.com/nema17-motor",
-      "location": "部品庫D-3"
+      "location": "部品庫D-3",
+      "updatedBy": "制御班"
     },
     {
       "id": "part-005",
       "name": "深溝玉軸受 608ZZ",
-      "image": "/images/inventory/bearing.svg",
+      "image": "/images/marbling-title.png",
       "quantity": 118,
       "unit": "個",
       "threshold": 80,
       "unitPrice": 120,
       "purchaseUrl": "https://www.example.com/608zz-bearing",
-      "location": "部品庫D-1"
+      "location": "部品庫D-1",
+      "updatedBy": "設計班"
     },
     {
       "id": "part-006",
       "name": "AWG22 シリコン配線",
-      "image": "/images/inventory/cable.svg",
+      "image": "/images/marbling-title.png",
       "quantity": 8.4,
       "unit": "m",
       "threshold": 12,
       "unitPrice": 95,
       "purchaseUrl": "https://www.example.com/awg22-wire",
-      "location": "配線ラックE-2"
+      "location": "配線ラックE-2",
+      "updatedBy": "配線担当"
     }
   ]
 }
