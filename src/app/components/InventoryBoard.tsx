@@ -1,44 +1,11 @@
 'use client';
 
 import Image from "next/image";
-import { useMemo, useState } from "react";
+import Link from "next/link";
+import { useEffect, useMemo, useState } from "react";
 
-export type InventoryItem = {
-  id: string;
-  name: string;
-  image: string;
-  quantity: number;
-  unit: string;
-  threshold: number;
-  unitPrice: number;
-  purchaseUrl: string;
-  location: string;
-  updatedBy: string;
-};
-
-type InventoryFormState = {
-  name: string;
-  quantity: string;
-  unit: string;
-  threshold: string;
-  unitPrice: string;
-  purchaseUrl: string;
-  location: string;
-  updatedBy: string;
-};
-
-const defaultImage = "/images/marbling-title.png";
-
-const emptyForm: InventoryFormState = {
-  name: "",
-  quantity: "",
-  unit: "",
-  threshold: "",
-  unitPrice: "",
-  purchaseUrl: "",
-  location: "",
-  updatedBy: "",
-};
+import { loadInventory, saveInventory } from "@/lib/inventory-client";
+import type { InventoryItem } from "@/lib/inventory-types";
 
 const quantityFormatter = new Intl.NumberFormat("ja-JP", {
   maximumFractionDigits: 2,
@@ -50,130 +17,28 @@ const priceFormatter = new Intl.NumberFormat("ja-JP", {
   maximumFractionDigits: 0,
 });
 
-const parseNumber = (value: string, label: string) => {
-  const num = Number(value);
-  if (!Number.isFinite(num)) {
-    throw new Error(`${label}を数値で入力してください`);
-  }
-  return num;
-};
-
-const normalizeString = (value: string, label: string) => {
-  const trimmed = value.trim();
-  if (!trimmed) {
-    throw new Error(`${label}を入力してください`);
-  }
-  return trimmed;
-};
-
-const buildItemPayload = (form: InventoryFormState) => {
-  return {
-    name: normalizeString(form.name, "物品名"),
-    quantity: parseNumber(form.quantity, "在庫"),
-    unit: normalizeString(form.unit, "単位"),
-    threshold: parseNumber(form.threshold, "閾値"),
-    unitPrice: parseNumber(form.unitPrice, "単価"),
-    purchaseUrl: normalizeString(form.purchaseUrl, "購入URL"),
-    location: normalizeString(form.location, "保管場所"),
-    updatedBy: normalizeString(form.updatedBy, "最終更新者"),
-  };
-};
-
-const createNextId = (items: InventoryItem[]) => {
-  const maxId = items.reduce((max, item) => {
-    const match = item.id.match(/(\d+)/);
-    if (!match) return max;
-    const num = Number(match[1]);
-    return Number.isFinite(num) && num > max ? num : max;
-  }, 0);
-  return `part-${String(maxId + 1).padStart(3, "0")}`;
-};
-
 type Props = {
   initialItems: InventoryItem[];
 };
 
 export default function InventoryBoard({ initialItems }: Props) {
   const [items, setItems] = useState<InventoryItem[]>(initialItems);
-  const [addForm, setAddForm] = useState<InventoryFormState>(emptyForm);
-  const [addError, setAddError] = useState<string | null>(null);
-  const [editingId, setEditingId] = useState<string | null>(null);
-  const [editForm, setEditForm] = useState<InventoryFormState | null>(null);
-  const [editError, setEditError] = useState<string | null>(null);
+  const [isReady, setIsReady] = useState(false);
 
   const lowStockCount = useMemo(
     () => items.filter((item) => item.quantity < item.threshold).length,
     [items]
   );
 
-  const handleAddChange = (field: keyof InventoryFormState, value: string) => {
-    setAddForm((prev) => ({ ...prev, [field]: value }));
-  };
+  useEffect(() => {
+    setItems(loadInventory(initialItems));
+    setIsReady(true);
+  }, [initialItems]);
 
-  const handleEditChange = (field: keyof InventoryFormState, value: string) => {
-    setEditForm((prev) => (prev ? { ...prev, [field]: value } : prev));
-  };
-
-  const handleAdd = () => {
-    try {
-      const payload = buildItemPayload(addForm);
-      const id = createNextId(items);
-      setItems((prev) => [
-        ...prev,
-        {
-          id,
-          image: defaultImage,
-          ...payload,
-        },
-      ]);
-      setAddForm(emptyForm);
-      setAddError(null);
-    } catch (error) {
-      setAddError(error instanceof Error ? error.message : "入力内容を確認してください");
-    }
-  };
-
-  const handleEditStart = (item: InventoryItem) => {
-    setEditingId(item.id);
-    setEditForm({
-      name: item.name,
-      quantity: `${item.quantity}`,
-      unit: item.unit,
-      threshold: `${item.threshold}`,
-      unitPrice: `${item.unitPrice}`,
-      purchaseUrl: item.purchaseUrl,
-      location: item.location,
-      updatedBy: item.updatedBy,
-    });
-    setEditError(null);
-  };
-
-  const handleEditCancel = () => {
-    setEditingId(null);
-    setEditForm(null);
-    setEditError(null);
-  };
-
-  const handleEditSave = () => {
-    if (!editingId || !editForm) return;
-    try {
-      const payload = buildItemPayload(editForm);
-      setItems((prev) =>
-        prev.map((item) =>
-          item.id === editingId
-            ? {
-                ...item,
-                ...payload,
-                image: defaultImage,
-              }
-            : item
-        )
-      );
-      handleEditCancel();
-    } catch (error) {
-      setEditError(error instanceof Error ? error.message : "入力内容を確認してください");
-    }
-  };
+  useEffect(() => {
+    if (!isReady) return;
+    saveInventory(items);
+  }, [items, isReady]);
 
   return (
     <div className="inventory-page">
@@ -210,186 +75,18 @@ export default function InventoryBoard({ initialItems }: Props) {
         </div>
       </section>
 
-      <section className="inventory-forms">
-        <div className="inventory-form">
-          <div className="inventory-form-header">
-            <div>
-              <p className="section-eyebrow">Add Item</p>
-              <h2>物品を追加</h2>
-            </div>
-            <button className="btn" type="button" onClick={handleAdd}>
-              追加する
-            </button>
-          </div>
-          <div className="form-grid">
-            <div className="form-group">
-              <label>物品名</label>
-              <input
-                type="text"
-                value={addForm.name}
-                onChange={(event) => handleAddChange("name", event.target.value)}
-              />
-            </div>
-            <div className="form-group">
-              <label>在庫</label>
-              <input
-                type="number"
-                step="0.01"
-                value={addForm.quantity}
-                onChange={(event) => handleAddChange("quantity", event.target.value)}
-              />
-            </div>
-            <div className="form-group">
-              <label>単位</label>
-              <input
-                type="text"
-                value={addForm.unit}
-                onChange={(event) => handleAddChange("unit", event.target.value)}
-              />
-            </div>
-            <div className="form-group">
-              <label>閾値（要補充の基準）</label>
-              <input
-                type="number"
-                step="0.01"
-                value={addForm.threshold}
-                onChange={(event) => handleAddChange("threshold", event.target.value)}
-              />
-            </div>
-            <div className="form-group">
-              <label>単価（円）</label>
-              <input
-                type="number"
-                step="1"
-                value={addForm.unitPrice}
-                onChange={(event) => handleAddChange("unitPrice", event.target.value)}
-              />
-            </div>
-            <div className="form-group">
-              <label>購入URL</label>
-              <input
-                type="url"
-                value={addForm.purchaseUrl}
-                onChange={(event) => handleAddChange("purchaseUrl", event.target.value)}
-              />
-            </div>
-            <div className="form-group">
-              <label>保管場所</label>
-              <input
-                type="text"
-                value={addForm.location}
-                onChange={(event) => handleAddChange("location", event.target.value)}
-              />
-            </div>
-            <div className="form-group">
-              <label>最終更新者</label>
-              <input
-                type="text"
-                value={addForm.updatedBy}
-                onChange={(event) => handleAddChange("updatedBy", event.target.value)}
-              />
-            </div>
-          </div>
-          {addError && <p className="form-error">{addError}</p>}
-        </div>
-
-        {editingId && editForm && (
-          <div className="inventory-form">
-            <div className="inventory-form-header">
-              <div>
-                <p className="section-eyebrow">Edit Item</p>
-                <h2>物品を編集</h2>
-              </div>
-              <div className="btn-row">
-                <button className="btn secondary" type="button" onClick={handleEditCancel}>
-                  キャンセル
-                </button>
-                <button className="btn" type="button" onClick={handleEditSave}>
-                  更新する
-                </button>
-              </div>
-            </div>
-            <div className="form-grid">
-              <div className="form-group">
-                <label>物品名</label>
-                <input
-                  type="text"
-                  value={editForm.name}
-                  onChange={(event) => handleEditChange("name", event.target.value)}
-                />
-              </div>
-              <div className="form-group">
-                <label>在庫</label>
-                <input
-                  type="number"
-                  step="0.01"
-                  value={editForm.quantity}
-                  onChange={(event) => handleEditChange("quantity", event.target.value)}
-                />
-              </div>
-              <div className="form-group">
-                <label>単位</label>
-                <input
-                  type="text"
-                  value={editForm.unit}
-                  onChange={(event) => handleEditChange("unit", event.target.value)}
-                />
-              </div>
-              <div className="form-group">
-                <label>閾値（要補充の基準）</label>
-                <input
-                  type="number"
-                  step="0.01"
-                  value={editForm.threshold}
-                  onChange={(event) => handleEditChange("threshold", event.target.value)}
-                />
-              </div>
-              <div className="form-group">
-                <label>単価（円）</label>
-                <input
-                  type="number"
-                  step="1"
-                  value={editForm.unitPrice}
-                  onChange={(event) => handleEditChange("unitPrice", event.target.value)}
-                />
-              </div>
-              <div className="form-group">
-                <label>購入URL</label>
-                <input
-                  type="url"
-                  value={editForm.purchaseUrl}
-                  onChange={(event) => handleEditChange("purchaseUrl", event.target.value)}
-                />
-              </div>
-              <div className="form-group">
-                <label>保管場所</label>
-                <input
-                  type="text"
-                  value={editForm.location}
-                  onChange={(event) => handleEditChange("location", event.target.value)}
-                />
-              </div>
-              <div className="form-group">
-                <label>最終更新者</label>
-                <input
-                  type="text"
-                  value={editForm.updatedBy}
-                  onChange={(event) => handleEditChange("updatedBy", event.target.value)}
-                />
-              </div>
-            </div>
-            {editError && <p className="form-error">{editError}</p>}
-          </div>
-        )}
-      </section>
-
       <section id="inventory" className="inventory-section">
         <div className="section-header">
           <div>
             <p className="section-eyebrow">Inventory</p>
             <h2>在庫一覧</h2>
           </div>
-          <p className="section-note">閾値を下回ると淡い赤で表示されます。</p>
+          <div className="btn-row">
+            <p className="section-note">閾値を下回ると淡い赤で表示されます。</p>
+            <Link className="btn" href="/items/new">
+              物品を追加
+            </Link>
+          </div>
         </div>
 
         <div className="inventory-grid">
@@ -440,13 +137,9 @@ export default function InventoryBoard({ initialItems }: Props) {
                   >
                     購入URL
                   </a>
-                  <button
-                    className="btn secondary"
-                    type="button"
-                    onClick={() => handleEditStart(item)}
-                  >
+                  <Link className="btn secondary" href={`/items/${item.id}/edit`}>
                     編集
-                  </button>
+                  </Link>
                   <span className="item-hint">必要個数は管理者に相談</span>
                 </div>
               </article>

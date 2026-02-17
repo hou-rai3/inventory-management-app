@@ -1,5 +1,6 @@
 import inventoryData from "../../data/inventory.json";
-import InventoryBoard, { type InventoryItem } from "./components/InventoryBoard";
+import InventoryBoard from "./components/InventoryBoard";
+import type { InventoryItem } from "@/lib/inventory-types";
 
 export default function Home() {
   const items = inventoryData.items as InventoryItem[];
