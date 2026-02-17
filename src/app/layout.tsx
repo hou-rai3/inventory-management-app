@@ -1,22 +1,24 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Shippori_Mincho_B1, Zen_Kaku_Gothic_New } from "next/font/google";
 import "./globals.css";
 import RobotBuddy from "./components/RobotBuddy";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const bodyFont = Zen_Kaku_Gothic_New({
+  variable: "--font-body",
   subsets: ["latin"],
+  weight: ["400", "500", "700"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const headingFont = Shippori_Mincho_B1({
+  variable: "--font-heading",
   subsets: ["latin"],
+  weight: ["400", "700"],
 });
 
 export const metadata: Metadata = {
-  title: "Marbling Dev Log",
-  description: "ロボコンmarbling開発記録 - 技術検証、参考事例、実装ログを書き残すブログ",
+  title: "物品管理ダッシュボード",
+  description: "在庫数、保管場所、購入先を誰でも確認できる物品管理アプリ",
 };
 
 export default function RootLayout({
@@ -26,31 +28,28 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ja">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+      <body className={`${bodyFont.variable} ${headingFont.variable} antialiased`}>
         <div className="app-shell">
           <header className="top-nav">
             <div className="brand">
               <span className="brand-dot" aria-hidden />
-              <span>Marbling Dev Log</span>
+              <span>ロボ研 物品管理</span>
             </div>
             <nav className="nav-links">
-              <Link className="nav-link" href="/">
-                投稿一覧
+              <Link className="nav-link" href="/#inventory">
+                在庫一覧
               </Link>
-              <Link className="nav-link" href="/about">
-                About
+              <Link className="nav-link" href="/#policy">
+                補充ルール
               </Link>
-              <Link className="nav-link" href="/admin/posts">
-                Admin Posts
-              </Link>
-              <Link className="nav-link" href="/admin/categories">
-                Admin Categories
+              <Link className="nav-link" href="/#contact">
+                連絡先
               </Link>
             </nav>
           </header>
           <main className="page-body">{children}</main>
           <footer className="footer">
-            <span>Built with Next.js 15 + Route Handlers</span>
+            <span>在庫情報は毎週金曜に更新します</span>
           </footer>
 
           <RobotBuddy />

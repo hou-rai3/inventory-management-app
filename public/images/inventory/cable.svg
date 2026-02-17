@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="420" viewBox="0 0 640 420" role="img" aria-labelledby="title desc">
+  <title id="title">Cable</title>
+  <desc id="desc">A stylized cable coil.</desc>
+  <rect width="640" height="420" rx="32" fill="#f6f1e8" />
+  <path d="M160 230c0-70 80-120 160-120s160 50 160 120" fill="none" stroke="#2c7d8f" stroke-width="22" stroke-linecap="round" />
+  <path d="M200 240c0-50 60-90 120-90s120 40 120 90" fill="none" stroke="#2c7d8f" stroke-width="18" stroke-linecap="round" opacity="0.8" />
+  <path d="M240 250c0-30 40-60 80-60s80 30 80 60" fill="none" stroke="#2c7d8f" stroke-width="14" stroke-linecap="round" opacity="0.6" />
+  <rect x="460" y="250" width="110" height="46" rx="16" fill="#c46a3a" />
+</svg>

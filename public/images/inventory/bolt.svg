@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="420" viewBox="0 0 640 420" role="img" aria-labelledby="title desc">
+  <title id="title">Bolt</title>
+  <desc id="desc">A stylized bolt and hex head illustration.</desc>
+  <rect width="640" height="420" rx="32" fill="#f2e5d6" />
+  <g fill="none" stroke="#7a4b2a" stroke-width="14" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M160 210h320" />
+    <path d="M220 170h200" />
+    <path d="M220 250h200" />
+    <path d="M180 140l80 140" />
+    <path d="M460 140l-80 140" />
+  </g>
+  <g fill="#c46a3a">
+    <polygon points="120,210 160,150 220,150 260,210 220,270 160,270" />
+    <rect x="260" y="190" width="280" height="40" rx="18" />
+  </g>
+</svg>

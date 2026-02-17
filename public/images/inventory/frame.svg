@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="420" viewBox="0 0 640 420" role="img" aria-labelledby="title desc">
+  <title id="title">Aluminum Frame</title>
+  <desc id="desc">A stylized aluminum extrusion frame.</desc>
+  <rect width="640" height="420" rx="32" fill="#eef4f1" />
+  <g fill="#3a6b6f">
+    <rect x="110" y="110" width="420" height="200" rx="20" />
+    <rect x="150" y="150" width="340" height="120" rx="14" fill="#d7e5e3" />
+  </g>
+  <g fill="#9bb6b3">
+    <circle cx="140" cy="140" r="10" />
+    <circle cx="500" cy="140" r="10" />
+    <circle cx="140" cy="280" r="10" />
+    <circle cx="500" cy="280" r="10" />
+  </g>
+</svg>

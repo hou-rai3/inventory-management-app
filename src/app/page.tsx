@@ -1,73 +1,174 @@
-import Link from "next/link";
 import Image from "next/image";
-import { getBaseUrl } from "@/lib/base-url";
-import type { PostWithCategory } from "@/lib/types";
+import inventoryData from "../../data/inventory.json";
 
-export const dynamic = "force-dynamic";
+type InventoryItem = {
+  id: string;
+  name: string;
+  image: string;
+  quantity: number;
+  unit: string;
+  threshold: number;
+  unitPrice: number;
+  purchaseUrl: string;
+  location: string;
+};
 
-async function fetchPosts(): Promise<PostWithCategory[]> {
-  const base = getBaseUrl();
-  const res = await fetch(`${base}/api/posts`, { cache: "no-store" });
-  if (!res.ok) {
-    console.error("Failed to load posts", await res.text());
-    return [];
-  }
-  const data = (await res.json()) as { posts: PostWithCategory[] };
-  return data.posts;
-}
+const quantityFormatter = new Intl.NumberFormat("ja-JP", {
+  maximumFractionDigits: 2,
+});
 
-export default async function Home() {
-  const posts = await fetchPosts();
+const priceFormatter = new Intl.NumberFormat("ja-JP", {
+  style: "currency",
+  currency: "JPY",
+  maximumFractionDigits: 0,
+});
+
+export default function Home() {
+  const items = inventoryData.items as InventoryItem[];
+  const lowStockCount = items.filter((item) => item.quantity < item.threshold).length;
 
   return (
-    <div className="page-body">
-      <section className="hero">
-        <Image 
-          src="/images/marbling-title.png" 
-          alt="Marbling 2026 タイトル" 
-          width={800} 
-          height={200} 
-          priority
-          style={{ width: '100%', height: 'auto', maxWidth: '800px', margin: '0 auto 24px' }}
-        />
-        <p className="badge">Marbling 2026</p>
-        <h1>ロボコン開発記録</h1>
-        <p className="muted">
-          DISCO ROBOT CONTEST 2026 「marbling」 の開発過程を記録するブログです。
-          技術検証、参考事例、実装の工夫、トラブルシューティングなどを書き残していきます。
-        </p>
-        <div className="btn-row" style={{ marginTop: 12 }}>
-          <Link className="btn" href="/admin/posts/new">
-            新規投稿を追加
-          </Link>
-          <Link className="btn secondary" href="/about">
-            このサイトについて
-          </Link>
+    <div className="inventory-page">
+      <section className="inventory-hero">
+        <div className="hero-copy">
+          <p className="hero-eyebrow">誰でも見られる在庫ボード</p>
+          <h1>物品管理ダッシュボード</h1>
+          <p className="hero-lead">
+            何が・何個（何m）・どこにあるかを即座に確認。閾値を下回った物品は自動でハイライトされ、
+            単価と購入URLもその場で確認できます。
+          </p>
+          <div className="hero-stats">
+            <div>
+              <span className="stat-label">登録アイテム数</span>
+              <span className="stat-value">{items.length}</span>
+            </div>
+            <div>
+              <span className="stat-label">要補充</span>
+              <span className="stat-value accent">{lowStockCount}</span>
+            </div>
+            <div>
+              <span className="stat-label">最終更新</span>
+              <span className="stat-value">2026/02/17</span>
+            </div>
+          </div>
+        </div>
+        <div className="hero-card">
+          <h2>閲覧ルール</h2>
+          <ul>
+            <li>在庫チェックは誰でもOK</li>
+            <li>補充が必要なら担当に連絡</li>
+            <li>購入URLは参考。最終判断は管理者</li>
+          </ul>
         </div>
       </section>
 
-      <section className="stack">
-        <div className="section-title">最新の開発記録</div>
-        <div className="grid">
-          {posts.map((post) => (
-            <article key={post.id} className="card">
-              <div className="meta">
-                <span>{new Date(post.createdAt).toLocaleDateString()}</span>
-                {post.category && <span className="badge">{post.category.name}</span>}
-              </div>
-              <h2>
-                <Link href={`/posts/${post.id}`}>{post.title}</Link>
-              </h2>
-              <p className="muted">{post.excerpt}</p>
-              <div className="btn-row" style={{ marginTop: 10 }}>
-                <Link className="btn secondary" href={`/posts/${post.id}`}>
-                  詳細を読む
-                </Link>
-              </div>
-            </article>
-          ))}
+      <section id="inventory" className="inventory-section">
+        <div className="section-header">
+          <div>
+            <p className="section-eyebrow">Inventory</p>
+            <h2>在庫一覧</h2>
+          </div>
+          <p className="section-note">閾値を下回ると淡い赤で表示されます。</p>
         </div>
-        {posts.length === 0 && <p className="muted">投稿がまだありません。管理画面から追加してください。</p>}
+
+        <div className="inventory-grid">
+          {items.map((item) => {
+            const isLow = item.quantity < item.threshold;
+            return (
+              <article key={item.id} className={`item-card${isLow ? " low" : ""}`}>
+                <div className="item-header">
+                  <div>
+                    <p className="item-location">保管: {item.location}</p>
+                    <h3>{item.name}</h3>
+                  </div>
+                  {isLow && <span className="low-badge">要補充</span>}
+                </div>
+                <div className="item-body">
+                  <div className="item-photo">
+                    <Image
+                      src={item.image}
+                      alt={`${item.name}の写真`}
+                      width={320}
+                      height={200}
+                    />
+                  </div>
+                  <div className="item-stats">
+                    <div>
+                      <span className="stat-label">在庫</span>
+                      <span className="stat-value">
+                        {quantityFormatter.format(item.quantity)}
+                        {item.unit}
+                      </span>
+                    </div>
+                    <div>
+                      <span className="stat-label">閾値</span>
+                      <span className="stat-value">
+                        {quantityFormatter.format(item.threshold)}
+                        {item.unit}
+                      </span>
+                    </div>
+                    <div>
+                      <span className="stat-label">単価</span>
+                      <span className="stat-value">{priceFormatter.format(item.unitPrice)}</span>
+                    </div>
+                  </div>
+                </div>
+                <div className="item-actions">
+                  <a
+                    className="btn"
+                    href={item.purchaseUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    購入URL
+                  </a>
+                  <span className="item-hint">必要個数は管理者に相談</span>
+                </div>
+              </article>
+            );
+          })}
+        </div>
+      </section>
+
+      <section id="policy" className="policy-section">
+        <div className="policy-card">
+          <h2>補充ルール</h2>
+          <p>
+            閾値を下回ったら赤く表示されます。基本は「次の2週間の使用量」を見積もって補充します。
+            迷ったら担当の在庫管理者に相談してください。
+          </p>
+          <div className="policy-grid">
+            <div>
+              <h3>日常消耗品</h3>
+              <p>毎週金曜に補充。数量が半分を切ったら購入申請。</p>
+            </div>
+            <div>
+              <h3>大型部材</h3>
+              <p>試作計画が決まった段階でまとめて手配。</p>
+            </div>
+            <div>
+              <h3>特殊パーツ</h3>
+              <p>納期を優先し、見積もり取得後に購入。</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="contact" className="contact-section">
+        <div className="contact-card">
+          <div>
+            <h2>連絡先</h2>
+            <p>補充や購入の相談は「#parts-inventory」チャンネルへ。</p>
+          </div>
+          <div className="contact-meta">
+            <span className="stat-label">担当</span>
+            <span className="stat-value">備品管理チーム</span>
+          </div>
+          <div className="contact-meta">
+            <span className="stat-label">更新日</span>
+            <span className="stat-value">2026/02/17</span>
+          </div>
+        </div>
       </section>
     </div>
   );

@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="420" viewBox="0 0 640 420" role="img" aria-labelledby="title desc">
+  <title id="title">Filament</title>
+  <desc id="desc">A stylized filament spool.</desc>
+  <rect width="640" height="420" rx="32" fill="#f7efe4" />
+  <circle cx="320" cy="210" r="130" fill="#f0a23a" />
+  <circle cx="320" cy="210" r="80" fill="#f9d59c" />
+  <circle cx="320" cy="210" r="34" fill="#ffffff" />
+  <path d="M420 120c40 20 70 60 70 100" fill="none" stroke="#c46a3a" stroke-width="12" stroke-linecap="round" />
+</svg>
