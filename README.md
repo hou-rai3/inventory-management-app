@@ -75,6 +75,7 @@ src/
    ├─ inventory-client.ts # localStorage操作ロジック
    ├─ storage.ts       # サーバー側ファイル永続化ロジック
    └─ types.ts         # 型定義ファイル
+
 6. ローカル開発環境の構築手順
 リポジトリをクローン後、以下のコマンドで開発環境を立ち上げることができる。
 
