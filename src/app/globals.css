@@ -6,7 +6,7 @@
   --bg-alt: #101010;
   --fg: #f2f2f2;
   --muted: #a8a8a8;
-  --border: #1f1f1f;
+  --border: #2f2f2f;
   --card: #111111;
   --accent: #f2f2f2;
   --accent-2: #d9d9d9;
@@ -69,7 +69,7 @@ body::after {
   padding: 14px 28px;
   backdrop-filter: none;
   background: #0f0f0f;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 2px solid var(--border);
   box-shadow: none;
 }
 
@@ -109,13 +109,13 @@ body::after {
   text-decoration: none;
   font-weight: 600;
   background: #151515;
-  border: 1px solid #222222;
+  border: 2px solid #3a3a3a;
   transition: transform 0.15s ease, box-shadow 0.2s ease, border-color 0.2s ease;
 }
 
 .nav-link:hover {
   transform: translateY(-1px);
-  border-color: #2a2a2a;
+  border-color: #3a3a3a;
   box-shadow: none;
 }
 
@@ -139,7 +139,7 @@ body::after {
   padding: 28px;
   border-radius: calc(var(--radius) * 1.2);
   background: #111111;
-  border: 1px solid var(--border);
+  border: 2px solid var(--border);
   box-shadow: var(--shadow);
 }
 
@@ -165,7 +165,7 @@ body::after {
 
 .card {
   background: var(--card);
-  border: 1px solid var(--border);
+  border: 2px solid var(--border);
   border-radius: var(--radius);
   padding: 18px;
   box-shadow: var(--shadow);
@@ -189,7 +189,7 @@ body::after {
 
 .surface {
   background: var(--card);
-  border: 1px solid var(--border);
+  border: 2px solid var(--border);
   border-radius: var(--radius);
   padding: 16px;
   box-shadow: var(--shadow);
@@ -215,7 +215,7 @@ body::after {
   font-weight: 700;
   font-size: 12px;
   letter-spacing: 0.01em;
-  border: 1px solid #2a2a2a;
+  border: 2px solid #3a3a3a;
 }
 
 .muted {
@@ -263,7 +263,7 @@ body::after {
 .btn.secondary {
   background: #121212;
   color: var(--fg);
-  border: 1px solid #2a2a2a;
+  border: 2px solid #3a3a3a;
   box-shadow: none;
 }
 
@@ -274,7 +274,7 @@ body::after {
 
 .btn.danger {
   background: #1a1a1a;
-  border: 1px solid #2a2a2a;
+  border: 2px solid #3a3a3a;
   color: var(--fg);
 }
 
@@ -289,7 +289,7 @@ body::after {
 .table td {
   text-align: left;
   padding: 12px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 2px solid rgba(255, 255, 255, 0.12);
 }
 
 .table th {
@@ -395,7 +395,7 @@ body::after {
 .form-group textarea {
   padding: 10px 12px;
   border-radius: 10px;
-  border: 1px solid #2a2a2a;
+  border: 2px solid #3a3a3a;
   background: var(--bg-alt);
   font: inherit;
   color: var(--fg);
@@ -447,7 +447,7 @@ a {
   background: var(--card);
   border-radius: calc(var(--radius) * 1.2);
   padding: 28px;
-  border: 1px solid var(--border);
+  border: 2px solid var(--border);
   box-shadow: var(--shadow);
 }
 
@@ -482,7 +482,7 @@ a {
   background: #121212;
   padding: 12px 14px;
   border-radius: 14px;
-  border: 1px solid #2a2a2a;
+  border: 2px solid #3a3a3a;
   display: grid;
   gap: 4px;
 }
@@ -508,7 +508,7 @@ a {
   background: #121212;
   border-radius: calc(var(--radius) * 1.2);
   padding: 26px;
-  border: 1px solid var(--border);
+  border: 2px solid var(--border);
   box-shadow: var(--shadow);
   display: grid;
   gap: 12px;
@@ -561,7 +561,7 @@ a {
 .inventory-form {
   background: var(--card);
   border-radius: var(--radius);
-  border: 1px solid var(--border);
+  border: 2px solid var(--border);
   box-shadow: var(--shadow);
   padding: 18px;
   display: grid;
@@ -585,7 +585,7 @@ a {
 .item-card {
   background: var(--card);
   border-radius: var(--radius);
-  border: 1px solid var(--border);
+  border: 2px solid var(--border);
   box-shadow: var(--shadow);
   padding: 18px;
   display: grid;
@@ -593,9 +593,9 @@ a {
 }
 
 .item-card.low {
-  border-color: #2a2a2a;
-  box-shadow: 0 12px 24px rgba(255, 255, 255, 0.08);
-  background: #121212;
+  border-color: #e10600;
+  box-shadow: 0 12px 24px rgba(225, 6, 0, 0.22);
+  background: linear-gradient(180deg, rgba(225, 6, 0, 0.12), #121212);
 }
 
 .item-header {
@@ -619,9 +619,9 @@ a {
 }
 
 .low-badge {
-  background: #141414;
-  border: 1px solid #2a2a2a;
-  color: #e6e6e6;
+  background: rgba(225, 6, 0, 0.2);
+  border: 2px solid rgba(225, 6, 0, 0.6);
+  color: #ffb3b0;
   font-size: 12px;
   font-weight: 700;
   padding: 6px 10px;
@@ -641,7 +641,7 @@ a {
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 1px solid var(--border);
+  border: 2px solid var(--border);
 }
 
 .item-photo img {
@@ -685,7 +685,7 @@ a {
 .contact-card {
   background: var(--card);
   border-radius: var(--radius);
-  border: 1px solid var(--border);
+  border: 2px solid var(--border);
   box-shadow: var(--shadow);
   padding: 24px;
   display: grid;
@@ -720,7 +720,7 @@ a {
   background: #121212;
   padding: 12px 14px;
   border-radius: 12px;
-  border: 1px solid var(--border);
+  border: 2px solid var(--border);
 }
 
 @media (max-width: 960px) {
@@ -774,7 +774,7 @@ a {
 
 .robot-bubble {
   background: rgba(10, 10, 10, 0.95);
-  border: 1px solid #2a2a2a;
+  border: 2px solid #3a3a3a;
   border-radius: 12px;
   padding: 10px 14px;
   box-shadow: 0 0 16px rgba(255, 255, 255, 0.08);
