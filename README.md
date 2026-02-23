@@ -1,4 +1,4 @@
-# 物品管理ダッシュボード
+<img width="1344" height="338" alt="image" src="https://github.com/user-attachments/assets/67aef989-f41e-43d9-92c0-a9d7de10b814" /># 物品管理ダッシュボード
 
 **公開URL (Vercel):** [https://inventory-management-app-rd89.vercel.app/](https://inventory-management-app-rd89.vercel.app/)
 
@@ -21,20 +21,20 @@
 
 **① 在庫と補充基準値の一元管理**
 現在の在庫数と、補充の目安となる基準値を一つの画面で確認可能とした。これにより、チーム全員が同じ基準で在庫状況を把握できる。
-`[スクリーンショット1: ダッシュボード全体、在庫一覧がわかる画像]`
+<img width="1889" height="943" alt="image" src="https://github.com/user-attachments/assets/8fd39753-05df-4121-87a4-31fb07aef7fa" />
 
 **② 補充対象の自動ハイライト機能**
 在庫が基準値を下回ったアイテムを視覚的に強調表示する。これにより、補充が必要な物品を即時に把握し、発注漏れを防ぐ。
-`[スクリーンショット2: 基準値を下回り、ハイライトされているアイテムの画像]`
+<img width="670" height="759" alt="image" src="https://github.com/user-attachments/assets/516fdf40-5799-492e-b561-4ecf442549c7" />
 
 **③ 発注導線を短縮する情報統合**
 保管場所、単価、購入先リンクを各アイテムのカード内に統合した。在庫不足の確認から実際の購入ページへの遷移がワンクリックで完了する。
-`[スクリーンショット3: アイテム詳細またはカード内のリンク部分の拡大画像]`
+<img width="143" height="80" alt="image" src="https://github.com/user-attachments/assets/6d8dbc46-c3b1-4b2c-82bb-a3084c0410d8" />
 
 **④ 直感的な管理画面**
 管理者向けに、在庫アイテムやカテゴリの追加、編集、削除を容易に行える専用インターフェースを実装した。
-`[スクリーンショット4: 管理画面のトップ画像]`
-`[スクリーンショット5: アイテム追加・編集フォームの画像]`
+<img width="1342" height="357" alt="image" src="https://github.com/user-attachments/assets/60db9fa2-e78d-405b-9f76-a6185f56f603" />
+<img width="1344" height="338" alt="image" src="https://github.com/user-attachments/assets/2f383a64-81f8-445f-a8e0-52421530b366" />
 
 ## 3. 使用技術（技術スタック）
 
@@ -46,7 +46,6 @@
 
 ## 4. システム構成図
 
-`[ここにシステム構成図の画像、またはMermaid等で作成した図を挿入]`
 
 * 現在の構成: クライアント（ブラウザ） <-> Vercel (Next.js) <-> ローカルストレージ/JSON
 * 将来の構成: クライアント <-> Vercel (Next.js API) <-> Supabase (PostgreSQL)
