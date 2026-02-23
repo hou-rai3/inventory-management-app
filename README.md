@@ -1,4 +1,4 @@
-<img width="1344" height="338" alt="image" src="https://github.com/user-attachments/assets/67aef989-f41e-43d9-92c0-a9d7de10b814" /># 物品管理ダッシュボード
+# 物品管理ダッシュボード
 
 **公開URL (Vercel):** [https://inventory-management-app-rd89.vercel.app/](https://inventory-management-app-rd89.vercel.app/)
 
