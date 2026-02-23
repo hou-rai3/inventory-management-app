@@ -13,26 +13,26 @@ export default function EditCategoryPage({ params }: Props) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const load = async () => {
-    setLoading(true);
-    try {
-      const res = await fetch("/api/categories");
-      if (!res.ok) throw new Error("読み込みに失敗しました");
-      const data = (await res.json()) as { categories: Category[] };
-      const cat = data.categories.find((c) => c.id === Number(params.id));
-      if (!cat) throw new Error("指定されたカテゴリが見つかりません");
-      setName(cat.name);
-      setError(null);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "エラーが発生しました");
-    } finally {
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
+    const load = async () => {
+      setLoading(true);
+      try {
+        const res = await fetch("/api/categories");
+        if (!res.ok) throw new Error("読み込みに失敗しました");
+        const data = (await res.json()) as { categories: Category[] };
+        const cat = data.categories.find((c) => c.id === Number(params.id));
+        if (!cat) throw new Error("指定されたカテゴリが見つかりません");
+        setName(cat.name);
+        setError(null);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : "エラーが発生しました");
+      } finally {
+        setLoading(false);
+      }
+    };
+
     load();
-  }, []);
+  }, [params.id]);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
