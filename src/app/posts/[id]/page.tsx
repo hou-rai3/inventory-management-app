@@ -8,7 +8,7 @@ export const dynamic = "force-dynamic";
 type Params = { params: { id: string } };
 
 async function fetchPost(id: string): Promise<PostWithCategory | null> {
-  const base = getBaseUrl();
+  const base = await getBaseUrl();
   const res = await fetch(`${base}/api/posts/${id}`, { cache: "no-store" });
   if (res.status === 404) return null;
   if (!res.ok) {

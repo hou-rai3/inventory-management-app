@@ -5,7 +5,7 @@ import type { PostWithCategory } from "@/lib/types";
 export const dynamic = "force-dynamic";
 
 async function fetchPosts(): Promise<PostWithCategory[]> {
-  const base = getBaseUrl();
+  const base = await getBaseUrl();
   const res = await fetch(`${base}/api/posts`, { cache: "no-store" });
   if (!res.ok) return [];
   const data = (await res.json()) as { posts: PostWithCategory[] };

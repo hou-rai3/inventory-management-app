@@ -12,7 +12,7 @@ async function fetchPostBySlug(slug: string): Promise<PostWithCategory | null> {
   // Treat slug as the numeric ID to keep backward compatibility with older links.
   const id = Number(slug);
   if (!Number.isFinite(id)) return null;
-  const base = getBaseUrl();
+  const base = await getBaseUrl();
   const res = await fetch(`${base}/api/posts/${id}`, { cache: "no-store" });
   if (!res.ok) return null;
   return (await res.json()) as PostWithCategory;
