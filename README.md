@@ -1,218 +1,113 @@
-# 物品管理ダッシュボード
+# 物品管理ダッシュボード (Inventory Management Dashboard)
 
-本番URL: https://inventory-management-app-rd89.vercel.app/
+本番環境: https://inventory-management-app-rd89.vercel.app/
 
-## 1. 問題提起（なぜ作ったか）
+[画像: ダッシュボード全体のスクリーンショット]
 
-ロボット開発・制作チームでは、次の課題が起きやすくなります。
+## 1. プロジェクト概要と開発背景
 
-- 誰が見ても「今なにが何個あるか」が分からない
-- 閾値を下回ってから気づくため、調達が後手に回る
-- 保管場所・単価・購入先が散在していて、補充判断に時間がかかる
-- 管理情報が属人化し、担当者が不在だと運用が止まる
+ロボット開発・制作チームにおける物品・資材の管理業務を効率化するための在庫ダッシュボードである。
+チーム開発において、以下の課題が頻発していた。
 
-このアプリは、在庫情報を可視化し、補充判断を早めることを目的とした **在庫ダッシュボード** です。
+* 誰が見ても「今なにが何個あるか」が分からない状態になっている
+* 在庫が閾値を下回ってから気づくため、調達が後手に回る
+* 保管場所、単価、購入先が散在しており、補充判断に時間がかかる
+* 管理情報が属人化し、担当者が不在だと運用が止まる
 
-## 2. 何を解決したか（提供価値）
+本アプリケーションは、在庫情報を可視化し、補充判断から発注までのリードタイムを最小化することを目的として開発した。
 
-- 在庫数と閾値を1画面で確認できる
-- 閾値未満のアイテムを自動ハイライトして、補充対象を即時把握できる
-- 保管場所・単価・購入URLをカード内で統合表示できる
-- 管理画面から投稿/カテゴリを編集できる（ローカル運用向け）
+## 2. 提供機能と解決した課題
 
-## 3. 就活で伝えられるポイント
+* **在庫と閾値の一元管理:** 在庫数と補充基準となる閾値を1画面で確認可能。
+* **補充対象の自動ハイライト:** 閾値未満のアイテムを視覚的に強調し、補充が必要な物品を即時把握できる。
+* **情報の統合表示:** 保管場所、単価、購入URLをアイテムカード内に統合し、確認から発注までの導線を短縮。
+* **直感的な管理機能:** 管理画面から在庫アイテムやカテゴリの追加・編集を容易に行える。
 
-このリポジトリは、次の観点を実例付きで説明できます。
+[画像: 閾値未満でハイライトされた在庫アイテムのスクリーンショット]
 
-### 3-1. フロントエンド実装力
+## 3. 技術的な工夫と設計思想
 
-- App Router 構成で画面責務を分割
-- 在庫カード、統計表示、アンカー遷移などのUI設計
-- `useMemo` / `useEffect` を使った状態同期（`localStorage` 連携）
+フロントエンドの実装からインフラの制約を考慮した設計まで、実運用を想定した開発を行った。
 
-### 3-2. バックエンド/データ設計の基礎
+### フロントエンド実装とUI設計
+* Next.js App Routerを採用し、画面ごとの責務を明確に分割。
+* 在庫カード、統計情報表示、ページ内遷移などのUIコンポーネントを設計。
+* `useMemo`と`useEffect`を活用し、ローカルストレージとReactのコンポーネント状態を同期。
 
-- API Route (`src/app/api/**/route.ts`) で CRUD を実装
-- `src/lib/storage.ts` にデータアクセス責務を集約
-- バリデーションとエラーハンドリング（不正ID・必須項目チェック）
+### バックエンドおよびデータ設計の基礎
+* API Route (`src/app/api/**/route.ts`) を用いてCRUD処理を実装。
+* データアクセス層を `src/lib/storage.ts` に集約し、保守性を向上。
+* 不正なIDや必須項目の欠落を防ぐバリデーションとエラーハンドリングを実装。
 
-### 3-3. 運用と制約の理解
-
-- Vercel の読み取り専用ファイルシステム制約を把握
-- 「閲覧専用運用」か「データストア移行」かの選択肢を提示
-- セキュリティ対応として Next.js 脆弱性アップデートを実施
-
-### 3-4. 面接での話し方（例）
-
-- 課題: 在庫管理が属人化し、欠品検知が遅い
-- 施策: 閾値ハイライト付きダッシュボードと管理APIを実装
-- 結果: 状況把握・補充判断までの時間を短縮できる運用基盤を構築
-- 学び: デプロイ先制約（Vercel）を前提に設計を見直す重要性
+### 運用環境の制約を考慮した設計
+* デプロイ先であるVercelの「読み取り専用ファイルシステム」という制約をあらかじめ把握。
+* 制約に対する現実的な解として、「閲覧専用運用」での提供と、将来的な「外部データストア移行」の選択肢を設計に組み込んでいる。
 
 ## 4. 技術スタック
 
-- Framework: Next.js 15 (App Router)
-- Language: TypeScript
-- UI/CSS: Tailwind CSS v4 + カスタムスタイル
-- Data: JSONファイル + `localStorage`（在庫表示用）
-- Lint/Build: ESLint, Turbopack
+* **Framework:** Next.js 15 (App Router)
+* **Language:** TypeScript
+* **UI/CSS:** Tailwind CSS v4, カスタムCSS
+* **Data Store:** JSONファイル, `localStorage` (フロントエンドの状態保持用)
+* **Tooling:** ESLint, Turbopack
 
-## 5. アプリ構成（詳細）
+## 5. アプリケーション構成
 
-### 5-1. ルート構成
+### データフロー
 
-| ルート | 役割 |
-|---|---|
-| `/` | 在庫ダッシュボード本体 |
-| `/#inventory` | 在庫カード一覧セクション |
-| `/#policy` | 補充ルールセクション |
-| `/#contact` | 連絡先セクション |
-| `/items/new` | 在庫アイテム追加画面 |
-| `/items/[id]/edit` | 在庫アイテム編集画面 |
-| `/admin/posts` | 投稿一覧（管理） |
-| `/admin/posts/new` | 投稿作成（管理） |
-| `/admin/posts/[id]` | 投稿編集（管理） |
-| `/admin/categories` | カテゴリ一覧（管理） |
-| `/admin/categories/new` | カテゴリ作成（管理） |
-| `/admin/categories/[id]` | カテゴリ編集（管理） |
-| `/posts/[id]` | 投稿詳細 |
-| `/blog` | 旧URLエイリアス |
-| `/blog/[slug]` | 旧URLから新URLへの橋渡し |
+1. 初期アクセス時、`src/app/page.tsx` が `data/inventory.json` を初期値としてロード。
+2. クライアント側で `InventoryBoard.tsx` が `localStorage` のデータを優先的に読み込み表示。
+3. ユーザーの編集操作は `localStorage` に保存され、再訪問時に状態を復元。
+4. 投稿やカテゴリの管理はAPIを経由して `storage.ts` を呼び出し、`data/store.json` を更新（ローカル環境想定）。
 
-### 5-2. API エンドポイント
+[画像: データフロー図・アーキテクチャ図（任意）]
 
-| エンドポイント | メソッド | 役割 |
-|---|---|---|
-| `/api/posts` | GET | 投稿一覧取得 |
-| `/api/posts/[id]` | GET | 投稿詳細取得 |
-| `/api/categories` | GET | カテゴリ一覧取得 |
-| `/api/admin/posts` | GET/POST | 投稿管理（一覧・追加） |
-| `/api/admin/posts/[id]` | PUT/DELETE | 投稿管理（更新・削除） |
-| `/api/admin/categories` | GET/POST | カテゴリ管理（一覧・追加） |
-| `/api/admin/categories/[id]` | PUT/DELETE | カテゴリ管理（更新・削除） |
+### ディレクトリ構成（主要部分）
 
-### 5-3. ディレクトリ詳細
+```text
+src/
+├─ app/
+│  ├─ api/             # Route Handler (BFF・APIエンドポイント)
+│  ├─ admin/           # 管理画面群（投稿/カテゴリのCRUD）
+│  ├─ components/      # UIコンポーネント (InventoryBoard等)
+│  └─ page.tsx         # ダッシュボード起点
+└─ lib/
+   ├─ inventory-client.ts # localStorage操作ロジック
+   ├─ storage.ts       # サーバー側ファイル永続化ロジック
+   └─ types.ts         # 型定義ファイル
+6. ローカル開発環境の構築手順
+リポジトリをクローン後、以下のコマンドで開発環境を立ち上げることができる。
 
-```
-inventory-management-app/
-├─ data/
-│  ├─ inventory.json                # 在庫ダッシュボードの初期データ
-│  └─ store.json                    # 投稿/カテゴリの保存データ
-├─ public/
-│  ├─ images/
-│  │  ├─ inventory/                 # 在庫アイテム画像
-│  │  └─ marbling-title.png         # 見出し画像
-│  └─ *.svg                         # Next.js テンプレート由来アイコン
-├─ src/
-│  ├─ app/
-│  │  ├─ about/page.tsx             # アバウトページ
-│  │  ├─ admin/
-│  │  │  ├─ posts/                  # 投稿管理画面群（一覧/新規/編集）
-│  │  │  └─ categories/             # カテゴリ管理画面群（一覧/新規/編集）
-│  │  ├─ api/                       # Route Handler (BFF層)
-│  │  │  ├─ posts/route.ts
-│  │  │  ├─ posts/[id]/route.ts
-│  │  │  ├─ categories/route.ts
-│  │  │  └─ admin/**/route.ts
-│  │  ├─ blog/
-│  │  │  ├─ page.tsx                # 旧 /blog 一覧
-│  │  │  └─ [slug]/page.tsx         # 旧URL互換
-│  │  ├─ components/
-│  │  │  ├─ InventoryBoard.tsx      # 在庫UIの主要コンポーネント
-│  │  │  └─ RobotBuddy.tsx          # 補助UIコンポーネント
-│  │  ├─ items/
-│  │  │  ├─ new/page.tsx            # 在庫アイテム追加
-│  │  │  └─ [id]/edit/page.tsx      # 在庫アイテム編集
-│  │  ├─ posts/[id]/page.tsx        # 投稿詳細ページ
-│  │  ├─ globals.css                # 全体スタイル
-│  │  ├─ layout.tsx                 # 共通レイアウト
-│  │  └─ page.tsx                   # ホーム（在庫ボード起点）
-│  └─ lib/
-│     ├─ base-url.ts                # SSR fetch 時のベースURL解決
-│     ├─ inventory-client.ts        # localStorage I/O
-│     ├─ inventory-types.ts         # 在庫型定義
-│     ├─ posts.ts                   # サンプル投稿定義（実運用外の補助）
-│     ├─ storage.ts                 # 投稿/カテゴリのファイル永続化ロジック
-│     └─ types.ts                   # 投稿/カテゴリ型定義
-├─ package.json                     # スクリプト・依存関係
-├─ next.config.ts                   # Next.js 設定
-├─ tsconfig.json                    # TypeScript 設定
-└─ eslint.config.mjs                # ESLint 設定
-```
-
-### 5-4. データフロー
-
-1. `src/app/page.tsx` が `data/inventory.json` を初期値として読み込む
-2. `InventoryBoard.tsx` がクライアントで `localStorage` を優先読み込み
-3. 編集操作後は `localStorage` に保存して再表示時に復元
-4. 投稿/カテゴリは API 経由で `storage.ts` を呼び、`data/store.json` を更新
-
-## 6. 開発環境セットアップ
-
-### クイックスタート
-
-```bash
+Bash
+# パッケージのインストール
 npm install
+
+# 開発用サーバーの起動 (Turbopack有効化)
 npm run dev
-```
+ブラウザで http://localhost:3000 にアクセスして動作を確認する。
 
-ブラウザで [http://localhost:3000](http://localhost:3000) を開きます。
+その他コマンド:
 
-### 開発用コマンド
+npm run build: 本番用ビルドの生成
 
-| コマンド | 説明 |
-|---|---|
-| `npm run dev` | 開発サーバ起動（Turbopack） |
-| `npm run build` | 本番ビルド生成 |
-| `npm start` | ビルド済みアプリ起動 |
-| `npm run lint` | 静的解析 |
+npm start: ビルド済みアプリケーションの起動
 
-## 7. デプロイと運用上の注意
+npm run lint: 静的解析の実行
 
-### 7-1. Vercel デプロイ
+7. デプロイと運用上の注意事項（重要）
+本アプリケーションはVercelへのデプロイに対応しているが、以下の運用上の制約が存在する。
 
-- このアプリは Vercel へ通常手順でデプロイ可能
-- 環境変数は原則不要（現実装で必須キーなし）
+Vercelのファイルシステム制約: Vercelの実行環境は一時的であるため、APIを通じた data/store.json への書き込み処理（管理画面からの追加・更新・削除）は永続化されない。
 
-### 7-2. 重要な制約（必読）
+推奨される運用方針: 本番環境（Vercel）では「閲覧およびフロントエンドでの状態変更（localStorage）」に限定した運用を推奨する。根本的なデータ更新はGitリポジトリ上のJSONファイルを直接編集し、デプロイし直すフローを想定している。
 
-- `storage.ts` は `data/store.json` へ書き込む実装
-- Vercel は実行環境のファイル書き込みが永続化されないため、`/admin` での追加・更新・削除は本番で保持されない
+8. 今後の拡張展望
+実運用をさらに強固にするため、以下のアップデートを構想している。
 
-### 7-3. 運用方針
+データストアのクラウド移行: storage.ts の永続化先をVercel KVやSupabaseなどの外部データベースへ切り替え、本番環境での完全なデータ操作を実現する。
 
-- **方針A（推奨）**: 閲覧専用として運用し、データ更新はGit管理で行う
-- **方針B**: Vercel KV / Supabase などへ移行し、管理画面を本番運用可能にする
+認証・認可の導入: 管理画面 (/admin) へのアクセスを保護し、セキュアな運用体制を構築する。
 
-## 8. トラブルシューティング
+監査ログの実装: 在庫の操作履歴（誰が、いつ、何を更新したか）を記録・表示する機能の追加。
 
-### ポート競合
-
-```bash
-npm run dev -- --port 3001
-```
-
-### 変更が反映されない
-
-- 開発サーバを再起動
-- ブラウザをハードリロード（Ctrl+Shift+R）
-
-### ビルド失敗
-
-- `npm run lint`
-- `npm run build`
-
-をローカルで通してから再デプロイする。
-
-## 9. 今後の改善案（就活で語りやすい）
-
-- `storage.ts` の永続化先を DB に切り替え（Vercel運用対応）
-- 認証・認可を導入し、`/admin` を保護
-- 在庫操作の監査ログ（誰がいつ何を更新したか）
-- テスト（API / UI / E2E）の整備
-- CI で `lint/build` を自動化
-
----
-
-**最終更新**: 2026-02-23
-
+品質保証プロセスの自動化: GitHub Actions等を用いたCI環境の構築および、テスト（API/UI/E2E）の導入。
