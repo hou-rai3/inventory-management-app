@@ -2,20 +2,20 @@
 @import "tailwindcss/preflight";
 @import "tailwindcss/utilities";
 :root {
-  --bg: #f7f7f7;
-  --bg-alt: #ffffff;
-  --fg: #111111;
-  --muted: #444444;
-  --border: #e0e0e0;
-  --card: #ffffff;
+  --bg: #0b0b0b;
+  --bg-alt: #111111;
+  --fg: #f5f5f5;
+  --muted: #b1b1b1;
+  --border: #262626;
+  --card: #121212;
   --accent: #e10600;
   --accent-2: #b0001c;
   --accent-3: #ff3b30;
   --red: #e10600;
-  --blue: #e5e5e5;
-  --green: #ededed;
+  --blue: #2a2a2a;
+  --green: #3a3a3a;
   --danger: #e10600;
-  --shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+  --shadow: 0 18px 40px rgba(0, 0, 0, 0.5);
   --radius: 18px;
 }
 
@@ -69,7 +69,7 @@ body::after {
   justify-content: space-between;
   padding: 14px 28px;
   backdrop-filter: blur(10px);
-  background: rgba(255, 255, 255, 0.95);
+  background: rgba(8, 8, 8, 0.9);
   border-bottom: 1px solid var(--border);
   box-shadow: 0 10px 20px rgba(225, 6, 0, 0.12);
 }
@@ -109,8 +109,8 @@ body::after {
   color: var(--fg);
   text-decoration: none;
   font-weight: 600;
-  background: rgba(0, 0, 0, 0.04);
-  border: 1px solid rgba(0, 0, 0, 0.12);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.14);
   transition: transform 0.15s ease, box-shadow 0.2s ease, border-color 0.2s ease;
 }
 
@@ -148,7 +148,7 @@ body::after {
 .section-title {
   font-weight: 700;
   letter-spacing: 0.02em;
-  color: var(--fg);
+  color: #ffffff;
   text-transform: uppercase;
   font-size: 12px;
   text-shadow: 0 0 10px rgba(225, 6, 0, 0.6);
