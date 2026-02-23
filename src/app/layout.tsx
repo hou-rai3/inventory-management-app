@@ -33,7 +33,7 @@ export default function RootLayout({
           <header className="top-nav">
             <div className="brand">
               <span className="brand-dot" aria-hidden />
-              <span>ロボ研 物品管理</span>
+              <span>ろぼっと倶楽部 物品管理</span>
             </div>
             <nav className="nav-links">
               <Link className="nav-link" href="/#inventory">
